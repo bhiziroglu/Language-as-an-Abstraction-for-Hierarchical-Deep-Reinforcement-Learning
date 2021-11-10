@@ -1,8 +1,11 @@
+import importlib.resources
+
 import torch
 import torch.nn as nn
 import random
 import numpy as np
 from util import *
+from clevr_robot_env import assets
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -27,7 +30,7 @@ class Encoder(nn.Module):
         self.embedding = nn.Embedding(len(self.vocab), self.output_sz).to(DEVICE)
 
     def get_vocab(self):
-        vocab_words = open('clevr_robot_env/assets/vocab.txt','r').read().split('\n')
+        vocab_words =  importlib.resources.read_text(assets, 'vocab.txt').split("\n")
         vocab_size = len(vocab_words)
         vocab = dict(zip(vocab_words, range(vocab_size)))
         return vocab
